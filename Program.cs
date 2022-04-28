@@ -1,7 +1,6 @@
 using System;
+using Models;
 using System.Windows.Forms;
-/*using Views;
-using Controllers;*/
 
 namespace EncryptMe
 {
@@ -9,9 +8,8 @@ namespace EncryptMe
     {
         public static void Main(string[] args)
         {
-            /*Application.EnableVisualStyles();
-            Application.Run(new Login());*/
-            Console.WriteLine("Hellow");
+            Application.EnableVisualStyles();
+            Application.Run(new Login());
         }
     }
 }
