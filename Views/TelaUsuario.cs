@@ -91,8 +91,8 @@ public class TelaUsuario : Form
 
         private void handleUsuarioClick(object sender, EventArgs e)
         {
-            // OperacoesUsuario menu = new OperacoesUsuario();
-            // menu.ShowDialog();
+            OperacoesUsuario menu = new OperacoesUsuario();
+            menu.ShowDialog();
         }
 
         private void handleCancelClick(object sender, EventArgs e)
