@@ -92,32 +92,19 @@ public class OperacoesCategoria : Form
             {
                 MessageBox.Show("Não há itens selecionados");
             }
-            // AtualizarCategoria menu = new AtualizarCategoria();
-            // menu.ShowDialog();
         }
         private void handleConfirmClickDeletarCategoria(object sender, EventArgs e)
         {
             if (listView.SelectedItems.Count > 0)
-
             {
-
                 ListViewItem itemSelecionado = listView.SelectedItems[0];
-
                 new ExcluirCategoria(Convert.ToInt32(itemSelecionado.Text)).Show();
-
             }
-
             else
-
             {
-
                 MessageBox.Show("Não há itens selecionados");
-
             }
-            // ExcluirCategoria menu = new ExcluirCategoria();
-            // menu.ShowDialog();
         }
-
         
         private void handleConfirmClick(object sender, EventArgs e)
         {
@@ -217,7 +204,7 @@ public class OperacoesCategoria : Form
             if (result == DialogResult.Yes)
             {
                 MessageBox.Show(
-                    $"Categoria inserido com sucesso! " +
+                    $"Categoria inserida com sucesso! " +
                     $"",
                     "",
                     MessageBoxButtons.OK
@@ -329,68 +316,60 @@ public class OperacoesCategoria : Form
 
         public class ExcluirCategoria : Form
         {
+            private System.ComponentModel.IContainer components = null;
+
             int id;
-            Label lblId;
-            TextBox TxtId;
+            Label lblDeletar;
 
             Button btnConfirm;
             Button btnCancel;
 
             public ExcluirCategoria(int id)
             {
-                this.lblId = new Label();
-                this.lblId.Text = "Digite o Id:";
-                this.lblId.Location = new Point(110, 20);
-
-                this.TxtId = new TextBox();
-                this.TxtId.Location = new Point(10, 50);
-                this.TxtId.Size = new Size(280, 30);
+                this.lblDeletar = new Label();
+                this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {id})";
+                this.lblDeletar.Size = new Size(200, 40);
+                this.lblDeletar.TextAlign = ContentAlignment.MiddleCenter;
+                this.lblDeletar.Location = new Point(0, 20);
 
                 this.btnConfirm = new Button();
-                this.btnConfirm.Text = "Confirmar";
-                this.btnConfirm.Location = new Point(50, 150);
+                this.btnConfirm.Text = "Sim";
                 this.btnConfirm.Size = new Size(80, 30);
+                this.btnConfirm.Location = new Point(15, 90);
                 this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
-
+    
                 this.btnCancel = new Button();
-                this.btnCancel.Text = "Cancelar";
-                this.btnCancel.Location = new Point(140, 150);
+                this.btnCancel.Text = "Não";
                 this.btnCancel.Size = new Size(80, 30);
+                this.btnCancel.Location = new Point(105, 90);
                 this.btnCancel.Click += new EventHandler(this.handleCancelClick);
 
-                this.Controls.Add(this.lblId);
-                this.Controls.Add(this.TxtId);
+                this.Controls.Add(this.lblDeletar);
+
                 this.Controls.Add(this.btnConfirm);
                 this.Controls.Add(this.btnCancel);
 
+                this.components = new System.ComponentModel.Container();
                 this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-                this.ClientSize = new System.Drawing.Size(300, 300);
-                this.Text = "Deletar Categoria ";
+                this.ClientSize = new System.Drawing.Size(200, 140);
                 this.StartPosition = FormStartPosition.CenterScreen;
             }
 
             private void handleConfirmClick(object sender, EventArgs e)
             {
-                DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja excluir uma categoria?" +
-                $"",
-                "Excluir Categoria",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
-            {
-                MessageBox.Show(
-                    $"Categoria excluida com sucesso! " +
-                    $"",
-                    "",
-                    MessageBoxButtons.OK
-                );
-            }
-            else
-            {
-                Console.WriteLine("Clicou não");
-            }
+                /*try
+                {
+                    CategoriaController.ExcluirCategoria(
+                        this.id
+                    );
+
+                    MessageBox.Show("Categoria deletada com sucesso!");
+                    this.Close();
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao deletar categoria.");
+                }*/ 
             }
 
             private void handleCancelClick(object sender, EventArgs e)

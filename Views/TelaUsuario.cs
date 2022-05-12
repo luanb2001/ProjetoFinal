@@ -79,8 +79,8 @@ public class TelaUsuario : Form
 
         private void handleTagsClick(object sender, EventArgs e)
         {
-            // OperacoesTag menu = new OperacoesTag();
-            // menu.ShowDialog();
+            OperacoesTag menu = new OperacoesTag();
+            menu.ShowDialog();
         }
 
         private void handleSenhasClick(object sender, EventArgs e)
