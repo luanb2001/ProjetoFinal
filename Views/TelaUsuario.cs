@@ -85,8 +85,8 @@ public class TelaUsuario : Form
 
         private void handleSenhasClick(object sender, EventArgs e)
         {
-            // OperacoesSenha menu = new OperacoesSenha();
-            // menu.ShowDialog();
+            OperacoesSenha menu = new OperacoesSenha();
+            menu.ShowDialog();
         }
 
         private void handleUsuarioClick(object sender, EventArgs e)
