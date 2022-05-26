@@ -136,7 +136,7 @@ public class OperacoesSenha : Form
         TextBox txtUrl;
         TextBox txtUsuario;
         TextBox txtSenha;
-        ListBox listProcedimento;
+        ListBox txtProcedimento;
         CheckedListBox clbTags;
 
         ComboBox cbCategoria;
@@ -192,7 +192,7 @@ public class OperacoesSenha : Form
 			{
 				cbCategoria.Items.Add(categorias);
 			}
-			cbCategoria.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+			// cbCategoria.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
 			cbCategoria.Location = new Point(10, 110);
 			cbCategoria.Size = new Size(280,30);
 			cbCategoria.Sorted = true;
@@ -209,9 +209,9 @@ public class OperacoesSenha : Form
             this.txtSenha.Location = new Point(10, 290);
             this.txtSenha.Size = new Size(280, 30);
 
-            this.listProcedimento = new ListBox();
-            this.listProcedimento.Location = new Point(10, 350);
-            this.listProcedimento.Size = new Size(280, 100);
+            this.txtProcedimento = new ListBox();
+            this.txtProcedimento.Location = new Point(10, 350);
+            this.txtProcedimento.Size = new Size(280, 100);
 
             this.clbTags = new CheckedListBox();
             this.clbTags.Location = new Point(10, 480);
@@ -247,7 +247,7 @@ public class OperacoesSenha : Form
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.txtSenha);
-            this.Controls.Add(this.listProcedimento);
+            this.Controls.Add(this.txtProcedimento);
             this.Controls.Add(this.clbTags);
 
             this.Controls.Add(this.btnCancel);
@@ -303,11 +303,10 @@ public class OperacoesSenha : Form
         Label lblTags;
 
         TextBox txtNome;
-        TextBox txtCategoria;
         TextBox txtUrl;
         TextBox txtUsuario;
         TextBox txtSenha;
-        ListBox listProcedimento;
+        TextBox txtProcedimento;
         CheckedListBox clbTags;
 
         ComboBox cbCategoria;
@@ -380,9 +379,13 @@ public class OperacoesSenha : Form
             this.txtSenha.Location = new Point(10, 290);
             this.txtSenha.Size = new Size(280, 30);
 
-            this.listProcedimento = new ListBox();
-            this.listProcedimento.Location = new Point(10, 350);
-            this.listProcedimento.Size = new Size(280, 100);
+            this.txtProcedimento = new TextBox();
+            this.txtProcedimento.Multiline = true;
+            this.txtProcedimento.ScrollBars = ScrollBars.Vertical;
+            this.txtProcedimento.AcceptsReturn = true;
+            this.txtProcedimento.WordWrap = true;
+            this.txtProcedimento.Location = new Point(10, 350);
+            this.txtProcedimento.Size = new Size(280, 100);
 
             this.clbTags = new CheckedListBox();
             this.clbTags.Location = new Point(10, 480);
@@ -391,7 +394,6 @@ public class OperacoesSenha : Form
 			clbTags.Items.AddRange(filmes);
 			clbTags.SelectionMode = SelectionMode.One;
 			clbTags.CheckOnClick = true;
-
 
             this.btnConfirm = new Button();
             this.btnConfirm.Text = "Confirmar";
@@ -418,7 +420,7 @@ public class OperacoesSenha : Form
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.txtSenha);
-            this.Controls.Add(this.listProcedimento);
+            this.Controls.Add(this.txtProcedimento);
             this.Controls.Add(this.clbTags);
 
             this.Controls.Add(this.btnCancel);
@@ -462,64 +464,54 @@ public class OperacoesSenha : Form
 
     public class ExcluirSenha : Form 
     {
-            private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer components = null;
+        int id;
+        Label lblDeletar;
+        Button btnConfirm;
+        Button btnCancel;
+        public ExcluirSenha(int id)
+        {
+            this.lblDeletar = new Label();
+            this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {id})";
+            this.lblDeletar.Size = new Size(200, 40);
+            this.lblDeletar.TextAlign = ContentAlignment.MiddleCenter;
+            this.lblDeletar.Location = new Point(0, 20);
+            this.btnConfirm = new Button();
+            this.btnConfirm.Text = "Sim";
+            this.btnConfirm.Size = new Size(80, 30);
+            this.btnConfirm.Location = new Point(15, 90);
+            this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
 
-            int id;
-            Label lblDeletar;
-
-            Button btnConfirm;
-            Button btnCancel;
-
-            public ExcluirSenha(int id)
+            this.btnCancel = new Button();
+            this.btnCancel.Text = "Não";
+            this.btnCancel.Size = new Size(80, 30);
+            this.btnCancel.Location = new Point(105, 90);
+            this.btnCancel.Click += new EventHandler(this.handleCancelClick);
+            this.Controls.Add(this.lblDeletar);
+            this.Controls.Add(this.btnConfirm);
+            this.Controls.Add(this.btnCancel);
+            this.components = new System.ComponentModel.Container();
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(200, 140);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+        private void handleConfirmClick(object sender, EventArgs e)
+        {
+            /*try
             {
-                this.lblDeletar = new Label();
-                this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {id})";
-                this.lblDeletar.Size = new Size(200, 40);
-                this.lblDeletar.TextAlign = ContentAlignment.MiddleCenter;
-                this.lblDeletar.Location = new Point(0, 20);
-
-                this.btnConfirm = new Button();
-                this.btnConfirm.Text = "Sim";
-                this.btnConfirm.Size = new Size(80, 30);
-                this.btnConfirm.Location = new Point(15, 90);
-                this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
-    
-                this.btnCancel = new Button();
-                this.btnCancel.Text = "Não";
-                this.btnCancel.Size = new Size(80, 30);
-                this.btnCancel.Location = new Point(105, 90);
-                this.btnCancel.Click += new EventHandler(this.handleCancelClick);
-
-                this.Controls.Add(this.lblDeletar);
-
-                this.Controls.Add(this.btnConfirm);
-                this.Controls.Add(this.btnCancel);
-
-                this.components = new System.ComponentModel.Container();
-                this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-                this.ClientSize = new System.Drawing.Size(200, 140);
-                this.StartPosition = FormStartPosition.CenterScreen;
-            }
-
-            private void handleConfirmClick(object sender, EventArgs e)
-            {
-                /*try
-                {
-                    SenhaController.ExcluirSenha(
-                        this.id
-                    );
-
-                    MessageBox.Show("Senha deletada com sucesso!");
-                    this.Close();
-                }
-                catch
-                {
-                    MessageBox.Show("Erro ao deletar senha.");
-                }*/ 
-            }
-
-            private void handleCancelClick(object sender, EventArgs e)
-            {
+                SenhaController.ExcluirSenha(
+                    this.id
+                );
+                MessageBox.Show("Senha deletada com sucesso!");
                 this.Close();
             }
+            catch
+            {
+                MessageBox.Show("Erro ao deletar senha.");
+            }*/ 
         }
+        private void handleCancelClick(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+    }

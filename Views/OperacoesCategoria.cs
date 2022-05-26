@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using Models;
+using Controllers;
 
 public class OperacoesCategoria : Form
     {
@@ -21,6 +22,7 @@ public class OperacoesCategoria : Form
         Button btnUpdate;
 
         ListView listView;
+        ListViewItem newLine;
         public OperacoesCategoria()
         {
             this.Controls.Add(this.lblCategorias);
@@ -30,7 +32,7 @@ public class OperacoesCategoria : Form
             listView.Size = new Size(410, 500);
             listView.View = View.Details;
 
-            listView.Items.AddRange(new ListViewItem[] { /*lista1, lista2, lista3*/ });
+            // listView.Items.AddRange(new ListViewItem[] { /*lista1, lista2, lista3*/ });
             listView.Columns.Add("ID", -2, HorizontalAlignment.Left);
             listView.Columns.Add("Nome", -2, HorizontalAlignment.Left);
             listView.Columns.Add("Descrição", -2, HorizontalAlignment.Left);
@@ -38,6 +40,15 @@ public class OperacoesCategoria : Form
             listView.GridLines = true;
             listView.AllowColumnReorder = true;
             listView.Sorting = SortOrder.Ascending;
+
+            foreach (Categoria item in ControllerCategoria.VisualizarCategoria())
+            {
+                newLine = new ListViewItem(item.Id.ToString());
+                newLine.SubItems.Add(item.Nome);
+                newLine.SubItems.Add(item.Descricao);
+
+                listView.Items.Add(newLine);
+            }
 
 
             this.btnInsert = new Button();
@@ -194,26 +205,20 @@ public class OperacoesCategoria : Form
             }
             private void handleConfirmClick(object sender, EventArgs e)
             {
-                DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja inserir uma nova categoria?" +
-                $"",
-                "Inserir Categoria",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
-            {
-                MessageBox.Show(
-                    $"Categoria inserida com sucesso! " +
-                    $"",
-                    "",
-                    MessageBoxButtons.OK
-                );
-            }
-            else
-            {
-                Console.WriteLine("Clicou não");
-            }
+                try
+                {
+                    ControllerCategoria.InserirCategoria(
+                        txtNome.Text,
+                        txtDescricao.Text
+                    );
+                    MessageBox.Show("Categoria inserida com sucesso.");
+                    this.Close();
+                }
+                catch (System.Exception)
+
+                {
+                    MessageBox.Show("Não foi possível inserir os dados.");
+                }
             }
 
             private void handleCancelClick(object sender, EventArgs e)
@@ -225,7 +230,7 @@ public class OperacoesCategoria : Form
 
         public class AtualizarCategoria : Form
         {
-            int id;
+            int Id;
             Label lblNome;
             Label lblDescricao;
 
@@ -236,8 +241,10 @@ public class OperacoesCategoria : Form
             Button btnConfirm;
             Button btnCancel;
 
-            public AtualizarCategoria(int id)
+            public AtualizarCategoria(int Id)
             {
+                this.Id = Id;
+
                 this.lblNome = new Label();
                 this.lblNome.Text = "Nome";
                 this.lblNome.Location = new Point(132, 20);
@@ -286,26 +293,21 @@ public class OperacoesCategoria : Form
             }
             private void handleConfirmClick(object sender, EventArgs e)
             {
-                DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja atualizar uma categoria?" +
-                $"",
-                "Atualizar Categoria",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
-            {
-                MessageBox.Show(
-                    $"Categoria atualizada com sucesso! " +
-                    $"",
-                    "",
-                    MessageBoxButtons.OK
-                );
-            }
-            else
-            {
-                Console.WriteLine("Clicou não");
-            }
+                try
+                {
+                    ControllerCategoria.AtualizarCategoria(
+                        this.Id,
+                        txtNome.Text,
+                        txtDescricao.Text
+                    );
+                    MessageBox.Show("Categoria atualizada com sucesso.");
+                    this.Close();
+                }
+                catch (Exception err)
+
+                {
+                    MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
+                }
             }
 
             private void handleCancelClick(object sender, EventArgs e)
@@ -318,16 +320,18 @@ public class OperacoesCategoria : Form
         {
             private System.ComponentModel.IContainer components = null;
 
-            int id;
+            int Id;
             Label lblDeletar;
 
             Button btnConfirm;
             Button btnCancel;
 
-            public ExcluirCategoria(int id)
+            public ExcluirCategoria(int Id)
             {
+                this.Id = Id;
+
                 this.lblDeletar = new Label();
-                this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {id})";
+                this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {Id})";
                 this.lblDeletar.Size = new Size(200, 40);
                 this.lblDeletar.TextAlign = ContentAlignment.MiddleCenter;
                 this.lblDeletar.Location = new Point(0, 20);
@@ -357,19 +361,19 @@ public class OperacoesCategoria : Form
 
             private void handleConfirmClick(object sender, EventArgs e)
             {
-                /*try
+                try
                 {
-                    CategoriaController.ExcluirCategoria(
-                        this.id
+                    ControllerCategoria.RemoverItem(
+                        this.Id
                     );
 
                     MessageBox.Show("Categoria deletada com sucesso!");
                     this.Close();
                 }
-                catch
+                catch (Exception err)
                 {
-                    MessageBox.Show("Erro ao deletar categoria.");
-                }*/ 
+                    MessageBox.Show($"Erro ao deletar categoria. {err.Message}");
+                } 
             }
 
             private void handleCancelClick(object sender, EventArgs e)
