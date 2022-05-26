@@ -32,7 +32,6 @@ public class OperacoesCategoria : Form
             listView.Size = new Size(410, 500);
             listView.View = View.Details;
 
-            // listView.Items.AddRange(new ListViewItem[] { /*lista1, lista2, lista3*/ });
             listView.Columns.Add("ID", -2, HorizontalAlignment.Left);
             listView.Columns.Add("Nome", -2, HorizontalAlignment.Left);
             listView.Columns.Add("Descrição", -2, HorizontalAlignment.Left);
@@ -49,7 +48,6 @@ public class OperacoesCategoria : Form
 
                 listView.Items.Add(newLine);
             }
-
 
             this.btnInsert = new Button();
             this.btnInsert.Text = "Inserir";
@@ -117,24 +115,6 @@ public class OperacoesCategoria : Form
             }
         }
         
-        private void handleConfirmClick(object sender, EventArgs e)
-        {
-            DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja realmente confirmar o agendamento?" +
-                $"",
-                "STATUS!",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
-            {
-                this.Close();
-            }
-            else
-            {
-                Console.WriteLine("Clicou não");
-            }
-        }
         private void handleCancelClick(object sender, EventArgs e)
         {
 
@@ -145,7 +125,6 @@ public class OperacoesCategoria : Form
         {
             private System.ComponentModel.IContainer components = null;
 
-            int id;
             Label lblNome;
             Label lblDescricao;
 
@@ -288,7 +267,7 @@ public class OperacoesCategoria : Form
 
                 this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
                 this.ClientSize = new System.Drawing.Size(300, 300);
-                this.Text = "Inserir Categoria";
+                this.Text = "Atualizar Categoria";
                 this.StartPosition = FormStartPosition.CenterScreen;
             }
             private void handleConfirmClick(object sender, EventArgs e)

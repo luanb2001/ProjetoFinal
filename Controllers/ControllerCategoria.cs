@@ -41,6 +41,12 @@ namespace Controllers
                 Descricao = Descricao;
             }
 
+            Categoria.AtualizarCategoria(
+                Id,
+                Nome,
+                Descricao
+            );
+
             return categoria;
         }
 
