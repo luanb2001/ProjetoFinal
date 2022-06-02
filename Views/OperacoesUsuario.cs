@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using Models;
+using Controllers;
 
 public class OperacoesUsuario : Form 
     {
@@ -21,6 +22,7 @@ public class OperacoesUsuario : Form
         Button btnUpdate;
 
         ListView listView;
+        ListViewItem newLine;
         public OperacoesUsuario()
         {
             this.Controls.Add(this.lblUsuarios);
@@ -30,7 +32,6 @@ public class OperacoesUsuario : Form
             listView.Size = new Size(410, 500);
             listView.View = View.Details;
 
-            listView.Items.AddRange(new ListViewItem[] { /*lista1*/ });
             listView.Columns.Add("ID", -2, HorizontalAlignment.Left);
             listView.Columns.Add("Nome", -2, HorizontalAlignment.Left);
             listView.Columns.Add("Email", -2, HorizontalAlignment.Left);
@@ -39,6 +40,15 @@ public class OperacoesUsuario : Form
             listView.AllowColumnReorder = true;
             listView.Sorting = SortOrder.Ascending;
 
+            foreach (Usuario item in ControllerUsuario.VisualizarUsuario())
+            {
+                newLine = new ListViewItem(item.Id.ToString());
+                newLine.SubItems.Add(item.Nome);
+                newLine.SubItems.Add(item.Email);
+                newLine.SubItems.Add(item.Senha);
+
+                listView.Items.Add(newLine);
+            }
 
             this.btnInsert = new Button();
             this.btnInsert.Text = "Inserir";
@@ -154,6 +164,7 @@ public class OperacoesUsuario : Form
             this.txtSenha = new TextBox();
             this.txtSenha.Location = new Point(10, 170);
             this.txtSenha.Size = new Size(280, 30);
+            this.txtSenha.PasswordChar = '*';
 
             this.btnConfirm = new Button();
             this.btnConfirm.Text = "Confirmar";
@@ -186,25 +197,20 @@ public class OperacoesUsuario : Form
         }
         private void handleConfirmClick(object sender, EventArgs e)
         {
-            DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja inserir um novo Usuario?" +
-                $"",
-                "Inserir Usuario",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
+            try
+                {
+                    ControllerUsuario.InserirUsuario(
+                        txtNome.Text,
+                        txtEmail.Text,
+                        txtSenha.Text
+                    );
+                    MessageBox.Show("Usuário inserida com sucesso.");
+                    this.Close();
+                }
+                catch (System.Exception)
+
             {
-                MessageBox.Show(
-                    $"Usuario inserido com sucesso! " +
-                    $"",
-                    "",
-                    MessageBoxButtons.OK
-                );
-            }
-            else
-            {
-                Console.WriteLine("Clicou não");
+                MessageBox.Show("Não foi possível inserir os dados.");
             }
         }
 
@@ -217,14 +223,16 @@ public class OperacoesUsuario : Form
     public class ExcluirUsuario : Form
     {
         private System.ComponentModel.IContainer components = null;
-        int id;
+        int Id;
         Label lblDeletar;
         Button btnConfirm;
         Button btnCancel;
-        public ExcluirUsuario(int id)
+        public ExcluirUsuario(int Id)
         {
+            this.Id = Id;
+
             this.lblDeletar = new Label();
-            this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {id})";
+            this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {Id})";
             this.lblDeletar.Size = new Size(200, 40);
             this.lblDeletar.TextAlign = ContentAlignment.MiddleCenter;
             this.lblDeletar.Location = new Point(0, 20);
@@ -249,18 +257,18 @@ public class OperacoesUsuario : Form
         }
         private void handleConfirmClick(object sender, EventArgs e)
         {
-            /*try
+            try
             {
-                UsuarioController.ExcluirUsuario(
-                    this.id
+                ControllerUsuario.RemoverItem(
+                    this.Id
                 );
-                MessageBox.Show("Usuario deletado com sucesso!");
+                MessageBox.Show("Usuário deletado com sucesso!");
                 this.Close();
             }
-            catch
+            catch (Exception err)
             {
-                MessageBox.Show("Erro ao deletar tag.");
-            }*/ 
+                MessageBox.Show($"Erro ao deletar usuário. {err.Message}");
+            } 
         }
         private void handleCancelClick(object sender, EventArgs e)
         {
@@ -272,7 +280,7 @@ public class OperacoesUsuario : Form
     {
         private System.ComponentModel.IContainer components = null;
 
-        int id;
+        int Id;
         Label lblNome;
         Label lblEmail;
         Label lblSenha;
@@ -284,8 +292,10 @@ public class OperacoesUsuario : Form
         Button btnConfirm;
         Button btnCancel;
 
-        public AtualizarUsuario(int id)
+        public AtualizarUsuario(int Id)
         {
+            this.Id = Id;
+
             this.lblNome = new Label();
             this.lblNome.Text = "Nome";
             this.lblNome.Location = new Point(130, 20);
@@ -311,6 +321,7 @@ public class OperacoesUsuario : Form
             this.txtSenha = new TextBox();
             this.txtSenha.Location = new Point(10, 170);
             this.txtSenha.Size = new Size(280, 30);
+            this.txtSenha.PasswordChar = '*';
 
             this.btnConfirm = new Button();
             this.btnConfirm.Text = "Confirmar";
@@ -343,25 +354,20 @@ public class OperacoesUsuario : Form
         }
         private void handleConfirmClick(object sender, EventArgs e)
         {
-            DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja atualizar um Usuário?" +
-                $"",
-                "Atualizar Usuário",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
+            try
+                {
+                    ControllerUsuario.AtualizarUsuario(
+                        this.Id,
+                        txtNome.Text,
+                        txtEmail.Text,
+                        txtSenha.Text
+                    );
+                    MessageBox.Show("Usuário atualizado com sucesso.");
+                    this.Close();
+                }
+                catch (Exception err)
             {
-                MessageBox.Show(
-                    $"Usuário atualizado com sucesso! " +
-                    $"",
-                    "",
-                    MessageBoxButtons.OK
-                );
-            }
-            else
-            {
-                Console.WriteLine("Clicou não");
+               MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
             }
         }
 

@@ -72,7 +72,7 @@ namespace Models
         }
 
 
-        public static void AlterarSenha(
+        public static void AtualizarSenha(
             int Id,
             string Nome,
             int CategoriaId,

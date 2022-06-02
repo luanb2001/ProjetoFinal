@@ -23,9 +23,6 @@ public class TelaUsuario : Form
 
         public TelaUsuario()
         {
-            this.lblUsuario = new Label();
-            this.lblUsuario.Text = "Olá João";
-            this.lblUsuario.Location = new Point(120, 50);
 
             this.btnCategorias = new Button();
             this.btnCategorias.Text = "Categorias";
