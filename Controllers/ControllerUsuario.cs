@@ -25,6 +25,10 @@ namespace Controllers
             {
                 throw new Exception("Senha inválida");
             }
+            else
+            {
+                Senha = BCrypt.Net.BCrypt.HashPassword(Senha);
+            }
 
             return new Usuario(Nome, Email, Senha);
         }
@@ -49,6 +53,10 @@ namespace Controllers
             if(!String.IsNullOrEmpty(Senha))
             {
                 Senha = Senha;
+            }
+            else
+            {
+                Senha = BCrypt.Net.BCrypt.HashPassword(Senha);
             }
 
             Usuario.AtualizarUsuario(

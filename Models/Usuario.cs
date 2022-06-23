@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Repository;
 using System.Windows.Forms;
+using System;
 
 namespace Models
 {
@@ -49,7 +50,7 @@ namespace Models
             {
                 return false;
             }
-            Usuario it = (Usuario) obj;
+            Usuario it = (Usuario)obj;
             return it.Id == this.Id;
         }
 
@@ -86,8 +87,8 @@ namespace Models
         {
             Context db = new Context();
             IEnumerable<Usuario> usuarios = from Usuario in db.Usuarios
-                            where Usuario.Id == Id
-                            select Usuario;
+                                            where Usuario.Id == Id
+                                            select Usuario;
 
             return usuarios.First();
         }
@@ -101,13 +102,20 @@ namespace Models
 
         public static void Auth(string Email, string Senha)
         {
-            Usuario usuario = GetUsuarios()
-                .Where(it => it.Email == Email 
-                    && BCrypt.Net.BCrypt.Verify(Senha, it.Senha)
-                )
-                .First();
-            
-            UsuarioAuth = usuario;
+            try
+            {
+                Usuario usuario = GetUsuarios()
+                    .Where(it => it.Email == Email
+                        && BCrypt.Net.BCrypt.Verify(Senha, it.Senha)
+                    )
+                    .First();
+
+                UsuarioAuth = usuario;
+            }
+            catch
+            {
+                throw new Exception("Usuário ou senha inválida");
+            }
         }
     }
 }
