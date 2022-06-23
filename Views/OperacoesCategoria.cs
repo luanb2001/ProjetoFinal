@@ -95,7 +95,7 @@ public class OperacoesCategoria : Form
             if (listView.SelectedItems.Count > 0)
             {
                 ListViewItem itemSelecionado = listView.SelectedItems[0];
-                new AtualizarCategoria(Convert.ToInt32(itemSelecionado.Text)).Show();
+                new InserirCategoria(Convert.ToInt32(itemSelecionado.Text)).Show();
             }
             else
             {
@@ -121,9 +121,11 @@ public class OperacoesCategoria : Form
             this.Close();
         }
 
-        public class InserirCategoria : Form
+        public class InserirCategoria : Form //Inserir e Atualizar Senha
         {
             private System.ComponentModel.IContainer components = null;
+
+            Categoria categoria;
 
             Label lblNome;
             Label lblDescricao;
@@ -134,7 +136,7 @@ public class OperacoesCategoria : Form
             Button btnConfirm;
             Button btnCancel;
 
-            public InserirCategoria()
+            public InserirCategoria(int id = 0)
             {
                 this.lblNome = new Label();
                 this.lblNome.Text = "Nome";
@@ -148,24 +150,28 @@ public class OperacoesCategoria : Form
 
                 this.txtNome = new TextBox();
                 this.txtNome.Location = new Point(10, 50);
-                this.txtNome.Size = new Size(280, 30);
+                this.txtNome.Size = new Size(270, 30);
 
                 this.txtDescricao = new TextBox();
                 this.txtDescricao.Location = new Point(10, 110);
-                this.txtDescricao.Size = new Size(280, 30);
+                this.txtDescricao.Size = new Size(270, 30);
 
                 this.btnConfirm = new Button();
                 this.btnConfirm.Text = "Confirmar";
-                this.btnConfirm.Location = new Point(110, 180);
+                this.btnConfirm.Location = new Point(100, 160);
                 this.btnConfirm.Size = new Size(80, 30);
-                this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
+                this.btnConfirm.Click += new EventHandler(this.btnConfirmClick);
 
                 this.btnCancel = new Button();
-                this.btnCancel.Text = "Fechar";
-                this.btnCancel.Location = new Point(110, 220);
+                this.btnCancel.Text = "Cancelar";
+                this.btnCancel.Location = new Point(100, 200);
                 this.btnCancel.Size = new Size(80, 30);
-                this.btnCancel.Click += new EventHandler(this.handleCancelClick);
+                this.btnCancel.Click += new EventHandler(this.btnCancelClick);
 
+                if (id > 0) {
+                    this.categoria = ControllerCategoria.GetCategoria(id);
+                    this.txtNome.Text = this.categoria.Nome;
+                }
 
                 this.Controls.Add(this.lblNome);
                 this.Controls.Add(this.lblDescricao);
@@ -178,123 +184,44 @@ public class OperacoesCategoria : Form
 
                 this.components = new System.ComponentModel.Container();
                 this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-                this.ClientSize = new System.Drawing.Size(300, 300);
-                this.Text = "Inserir Categoria";
+                this.Text = id > 0 ? "Alterar Categoria " : "Inserir Categoria ";
                 this.StartPosition = FormStartPosition.CenterScreen;
             }
-            private void handleConfirmClick(object sender, EventArgs e)
+            private void btnConfirmClick(object sender, EventArgs e)
             {
+                bool isUpdate = this.categoria != null;
                 try
                 {
-                    ControllerCategoria.InserirCategoria(
-                        txtNome.Text,
-                        txtDescricao.Text
-                    );
-                    MessageBox.Show("Categoria inserida com sucesso.");
-                    this.Close();
-                }
-                catch (System.Exception)
-
-                {
-                    MessageBox.Show("Não foi possível inserir os dados.");
-                }
-            }
-
-            private void handleCancelClick(object sender, EventArgs e)
-            {
-                this.Close();
-            }
-
-        }
-
-        public class AtualizarCategoria : Form
-        {
-            int Id;
-            Label lblNome;
-            Label lblDescricao;
-
-            TextBox txtNome;
-            TextBox txtDescricao;
-
-
-            Button btnConfirm;
-            Button btnCancel;
-
-            public AtualizarCategoria(int Id)
-            {
-                this.Id = Id;
-
-                this.lblNome = new Label();
-                this.lblNome.Text = "Nome";
-                this.lblNome.Location = new Point(132, 20);
-
-                this.lblDescricao = new Label();
-                this.lblDescricao.Text = "Descrição";
-                this.lblDescricao.Location = new Point(125, 80);
-                this.lblDescricao.Size = new Size(300, 30);
-
-
-                this.txtNome = new TextBox();
-                this.txtNome.Location = new Point(10, 50);
-                this.txtNome.Size = new Size(280, 30);
-
-                this.txtDescricao = new TextBox();
-                this.txtDescricao.Location = new Point(10, 110);
-                this.txtDescricao.Size = new Size(280, 30);
-
-                this.btnConfirm = new Button();
-                this.btnConfirm.Text = "Confirmar";
-                this.btnConfirm.Location = new Point(110, 180);
-                this.btnConfirm.Size = new Size(80, 30);
-                this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
-
-                this.btnCancel = new Button();
-                this.btnCancel.Text = "Fechar";
-                this.btnCancel.Location = new Point(110, 220);
-                this.btnCancel.Size = new Size(80, 30);
-                this.btnCancel.Click += new EventHandler(this.handleCancelClick);
-
-
-                this.Controls.Add(this.lblNome);
-                this.Controls.Add(this.lblDescricao);
-
-                this.Controls.Add(this.txtNome);
-                this.Controls.Add(this.txtDescricao);
-
-                this.Controls.Add(this.btnConfirm);
-                this.Controls.Add(this.btnCancel);
                 
-
-                this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-                this.ClientSize = new System.Drawing.Size(300, 300);
-                this.Text = "Atualizar Categoria";
-                this.StartPosition = FormStartPosition.CenterScreen;
-            }
-            private void handleConfirmClick(object sender, EventArgs e)
-            {
-                try
-                {
+                    if (isUpdate) 
+                    {
                     ControllerCategoria.AtualizarCategoria(
-                        this.Id,
+                        this.categoria.Id,
                         txtNome.Text,
                         txtDescricao.Text
                     );
-                    MessageBox.Show("Categoria atualizada com sucesso.");
+                    } else {
+                        ControllerCategoria.InserirCategoria(
+                            txtNome.Text,
+                            txtDescricao.Text
+                        );
+                    }
+
+                    MessageBox.Show($"Dados {(isUpdate ? "alterados" : "incluídos")} com sucesso.");
                     this.Close();
                 }
                 catch (Exception err)
-
                 {
-                    MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
+                    MessageBox.Show($"Não foi possível {(isUpdate ? "alterar" : "incluir")} os dados. {err.Message}");
                 }
             }
 
-            private void handleCancelClick(object sender, EventArgs e)
+            private void btnCancelClick(object sender, EventArgs e)
             {
                 this.Close();
             }
         }
-
+        
         public class ExcluirCategoria : Form
         {
             private System.ComponentModel.IContainer components = null;

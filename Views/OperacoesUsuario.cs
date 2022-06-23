@@ -91,7 +91,7 @@ public class OperacoesUsuario : Form
             if (listView.SelectedItems.Count > 0)
             {
                 ListViewItem itemSelecionado = listView.SelectedItems[0];
-                new AtualizarUsuario(Convert.ToInt32(itemSelecionado.Text)).Show();
+                new InserirUsuario(Convert.ToInt32(itemSelecionado.Text)).Show();
             }
             else
             {
@@ -122,103 +122,323 @@ public class OperacoesUsuario : Form
         }
     }
 
-    public class InserirUsuario : Form 
-    {
-        private System.ComponentModel.IContainer components = null;
-
-        Label lblNome;
-        Label lblEmail;
-        Label lblSenha;
-
-        TextBox txtNome;
-        TextBox txtEmail;
-        TextBox txtSenha;
-
-        Button btnConfirm;
-        Button btnCancel;
-
-        public InserirUsuario()
+    public class InserirUsuario : Form //Inserir e Atualizar Usuario
         {
-            this.lblNome = new Label();
-            this.lblNome.Text = "Nome";
-            this.lblNome.Location = new Point(130, 20);
+            private System.ComponentModel.IContainer components = null;
 
-            this.lblEmail = new Label();
-            this.lblEmail.Text = "Email";
-            this.lblEmail.Location = new Point(130, 80);
-            this.lblEmail.Size = new Size(300, 30);
+            Usuario usuario;
+
+            Label lblNome;
+            Label lblEmail;
+            Label lblSenha;
+
+            TextBox txtNome;
+            TextBox txtEmail;
+            TextBox txtSenha;
+
+
+            Button btnConfirm;
+            Button btnCancel;
+
+            public InserirUsuario(int id = 0)
+            {
+                this.ClientSize = new System.Drawing.Size(300, 320);
+
+                this.lblNome = new Label();
+                this.lblNome.Text = "Nome";
+                this.lblNome.Location = new Point(130, 20);
+
+                this.lblEmail = new Label();
+                this.lblEmail.Text = "Email";
+                this.lblEmail.Location = new Point(130, 80);
+                this.lblEmail.Size = new Size(300, 30);
             
-            this.lblSenha = new Label();
-            this.lblSenha.Text = "Senha";
-            this.lblSenha.Location = new Point(130, 140);
-            this.lblSenha.Size = new Size(300, 30);
+                this.lblSenha = new Label();
+                this.lblSenha.Text = "Senha";
+                this.lblSenha.Location = new Point(130, 140);
+                this.lblSenha.Size = new Size(300, 30);
 
-            this.txtNome = new TextBox();
-            this.txtNome.Location = new Point(10, 50);
-            this.txtNome.Size = new Size(280, 30);
+                this.txtNome = new TextBox();
+                this.txtNome.Location = new Point(10, 50);
+                this.txtNome.Size = new Size(272, 30);
 
-            this.txtEmail = new TextBox();
-            this.txtEmail.Location = new Point(10, 110);
-            this.txtEmail.Size = new Size(280, 30);
+                this.txtEmail = new TextBox();
+                this.txtEmail.Location = new Point(10, 110);
+                this.txtEmail.Size = new Size(272, 30);
 
-            this.txtSenha = new TextBox();
-            this.txtSenha.Location = new Point(10, 170);
-            this.txtSenha.Size = new Size(280, 30);
-            this.txtSenha.PasswordChar = '*';
+                this.txtSenha = new TextBox();
+                this.txtSenha.Location = new Point(10, 170);
+                this.txtSenha.Size = new Size(272, 30);
+                this.txtSenha.PasswordChar = '*';
 
-            this.btnConfirm = new Button();
-            this.btnConfirm.Text = "Confirmar";
-            this.btnConfirm.Location = new Point(100, 280);
-            this.btnConfirm.Size = new Size(90, 30);
-            this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
+                this.btnConfirm = new Button();
+                this.btnConfirm.Text = "Confirmar";
+                this.btnConfirm.Location = new Point(110, 210);
+                this.btnConfirm.Size = new Size(80, 30);
+                this.btnConfirm.Click += new EventHandler(this.btnConfirmClick);
 
-            this.btnCancel = new Button();
-            this.btnCancel.Text = "Cancelar";
-            this.btnCancel.Location = new Point(100, 320);
-            this.btnCancel.Size = new Size(90, 30);
-            this.btnCancel.Click += new EventHandler(this.handleCancelClick);
+                this.btnCancel = new Button();
+                this.btnCancel.Text = "Cancelar";
+                this.btnCancel.Location = new Point(110, 250);
+                this.btnCancel.Size = new Size(80, 30);
+                this.btnCancel.Click += new EventHandler(this.btnCancelClick);
 
-            this.Controls.Add(this.lblNome);
-            this.Controls.Add(this.lblEmail);
-            this.Controls.Add(this.lblSenha);
+                if (id > 0) {
+                    this.usuario = ControllerUsuario.GetUsuario(id);
+                    this.txtNome.Text = this.usuario.Nome;
+                }
 
-            this.Controls.Add(this.txtNome);
-            this.Controls.Add(this.txtEmail);
-            this.Controls.Add(this.txtSenha);
+                this.Controls.Add(this.lblNome);
+                this.Controls.Add(this.lblEmail);
+                this.Controls.Add(this.lblSenha);
 
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnConfirm);
+                this.Controls.Add(this.txtNome);
+                this.Controls.Add(this.txtEmail);
+                this.Controls.Add(this.txtSenha);
 
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 360);
-            this.Text = "Inserir Usuário ";
-            this.StartPosition = FormStartPosition.CenterScreen;
-        }
-        private void handleConfirmClick(object sender, EventArgs e)
-        {
-            try
+                this.Controls.Add(this.btnConfirm);
+                this.Controls.Add(this.btnCancel);
+
+                this.components = new System.ComponentModel.Container();
+                this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+                this.Text = id > 0 ? "Alterar Usuario " : "Inserir Usuario ";
+                this.StartPosition = FormStartPosition.CenterScreen;
+            }
+            private void btnConfirmClick(object sender, EventArgs e)
+            {
+                bool isUpdate = this.usuario != null;
+                try
                 {
-                    ControllerUsuario.InserirUsuario(
+                
+                    if (isUpdate) 
+                    {
+                    ControllerUsuario.AtualizarUsuario(
+                        this.usuario.Id,
                         txtNome.Text,
                         txtEmail.Text,
                         txtSenha.Text
                     );
-                    MessageBox.Show("Usuário inserida com sucesso.");
+                    } else {
+                        ControllerUsuario.InserirUsuario(
+                            txtNome.Text,
+                            txtEmail.Text,
+                            txtSenha.Text
+                        );
+                    }
+
+                    MessageBox.Show($"Dados {(isUpdate ? "alterados" : "incluídos")} com sucesso.");
                     this.Close();
                 }
-                catch (System.Exception)
+                catch (Exception err)
+                {
+                    MessageBox.Show($"Não foi possível {(isUpdate ? "alterar" : "incluir")} os dados. {err.Message}");
+                }
+            }
 
+            private void btnCancelClick(object sender, EventArgs e)
             {
-                MessageBox.Show("Não foi possível inserir os dados.");
+                this.Close();
             }
         }
 
-        private void handleCancelClick(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-    }
+    // public class InserirUsuario : Form 
+    // {
+    //     private System.ComponentModel.IContainer components = null;
+
+    //     Label lblNome;
+    //     Label lblEmail;
+    //     Label lblSenha;
+
+    //     TextBox txtNome;
+    //     TextBox txtEmail;
+    //     TextBox txtSenha;
+
+    //     Button btnConfirm;
+    //     Button btnCancel;
+
+    //     public InserirUsuario()
+    //     {
+    //         this.lblNome = new Label();
+    //         this.lblNome.Text = "Nome";
+    //         this.lblNome.Location = new Point(130, 20);
+
+    //         this.lblEmail = new Label();
+    //         this.lblEmail.Text = "Email";
+    //         this.lblEmail.Location = new Point(130, 80);
+    //         this.lblEmail.Size = new Size(300, 30);
+            
+    //         this.lblSenha = new Label();
+    //         this.lblSenha.Text = "Senha";
+    //         this.lblSenha.Location = new Point(130, 140);
+    //         this.lblSenha.Size = new Size(300, 30);
+
+    //         this.txtNome = new TextBox();
+    //         this.txtNome.Location = new Point(10, 50);
+    //         this.txtNome.Size = new Size(280, 30);
+
+    //         this.txtEmail = new TextBox();
+    //         this.txtEmail.Location = new Point(10, 110);
+    //         this.txtEmail.Size = new Size(280, 30);
+
+    //         this.txtSenha = new TextBox();
+    //         this.txtSenha.Location = new Point(10, 170);
+    //         this.txtSenha.Size = new Size(280, 30);
+    //         this.txtSenha.PasswordChar = '*';
+
+    //         this.btnConfirm = new Button();
+    //         this.btnConfirm.Text = "Confirmar";
+    //         this.btnConfirm.Location = new Point(100, 280);
+    //         this.btnConfirm.Size = new Size(90, 30);
+    //         this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
+
+    //         this.btnCancel = new Button();
+    //         this.btnCancel.Text = "Cancelar";
+    //         this.btnCancel.Location = new Point(100, 320);
+    //         this.btnCancel.Size = new Size(90, 30);
+    //         this.btnCancel.Click += new EventHandler(this.handleCancelClick);
+
+    //         this.Controls.Add(this.lblNome);
+    //         this.Controls.Add(this.lblEmail);
+    //         this.Controls.Add(this.lblSenha);
+
+    //         this.Controls.Add(this.txtNome);
+    //         this.Controls.Add(this.txtEmail);
+    //         this.Controls.Add(this.txtSenha);
+
+    //         this.Controls.Add(this.btnCancel);
+    //         this.Controls.Add(this.btnConfirm);
+
+    //         this.components = new System.ComponentModel.Container();
+    //         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+    //         this.ClientSize = new System.Drawing.Size(300, 360);
+    //         this.Text = "Inserir Usuário ";
+    //         this.StartPosition = FormStartPosition.CenterScreen;
+    //     }
+    //     private void handleConfirmClick(object sender, EventArgs e)
+    //     {
+    //         try
+    //             {
+    //                 ControllerUsuario.InserirUsuario(
+    //                     txtNome.Text,
+    //                     txtEmail.Text,
+    //                     txtSenha.Text
+    //                 );
+    //                 MessageBox.Show("Usuário inserida com sucesso.");
+    //                 this.Close();
+    //             }
+    //             catch (System.Exception)
+
+    //         {
+    //             MessageBox.Show("Não foi possível inserir os dados.");
+    //         }
+    //     }
+
+    //     private void handleCancelClick(object sender, EventArgs e)
+    //     {
+    //         this.Close();
+    //     }
+    // }
+
+    // public class AtualizarUsuario : Form
+    // {
+    //     private System.ComponentModel.IContainer components = null;
+
+    //     int Id;
+    //     Label lblNome;
+    //     Label lblEmail;
+    //     Label lblSenha;
+
+    //     TextBox txtNome;
+    //     TextBox txtEmail;
+    //     TextBox txtSenha;
+
+    //     Button btnConfirm;
+    //     Button btnCancel;
+
+    //     public AtualizarUsuario(int Id)
+    //     {
+    //         this.Id = Id;
+
+    //         this.lblNome = new Label();
+    //         this.lblNome.Text = "Nome";
+    //         this.lblNome.Location = new Point(130, 20);
+
+    //         this.lblEmail = new Label();
+    //         this.lblEmail.Text = "Email";
+    //         this.lblEmail.Location = new Point(130, 80);
+    //         this.lblEmail.Size = new Size(300, 30);
+            
+    //         this.lblSenha = new Label();
+    //         this.lblSenha.Text = "Senha";
+    //         this.lblSenha.Location = new Point(130, 140);
+    //         this.lblSenha.Size = new Size(300, 30);
+
+    //         this.txtNome = new TextBox();
+    //         this.txtNome.Location = new Point(10, 50);
+    //         this.txtNome.Size = new Size(280, 30);
+
+    //         this.txtEmail = new TextBox();
+    //         this.txtEmail.Location = new Point(10, 110);
+    //         this.txtEmail.Size = new Size(280, 30);
+
+    //         this.txtSenha = new TextBox();
+    //         this.txtSenha.Location = new Point(10, 170);
+    //         this.txtSenha.Size = new Size(280, 30);
+    //         this.txtSenha.PasswordChar = '*';
+
+    //         this.btnConfirm = new Button();
+    //         this.btnConfirm.Text = "Confirmar";
+    //         this.btnConfirm.Location = new Point(100, 280);
+    //         this.btnConfirm.Size = new Size(90, 30);
+    //         this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
+
+    //         this.btnCancel = new Button();
+    //         this.btnCancel.Text = "Cancelar";
+    //         this.btnCancel.Location = new Point(100, 320);
+    //         this.btnCancel.Size = new Size(90, 30);
+    //         this.btnCancel.Click += new EventHandler(this.handleCancelClick);
+
+    //         this.Controls.Add(this.lblNome);
+    //         this.Controls.Add(this.lblEmail);
+    //         this.Controls.Add(this.lblSenha);
+
+    //         this.Controls.Add(this.txtNome);
+    //         this.Controls.Add(this.txtEmail);
+    //         this.Controls.Add(this.txtSenha);
+
+    //         this.Controls.Add(this.btnCancel);
+    //         this.Controls.Add(this.btnConfirm);
+
+    //         this.components = new System.ComponentModel.Container();
+    //         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+    //         this.ClientSize = new System.Drawing.Size(300, 360);
+    //         this.Text = "Atualizar Usuário ";
+    //         this.StartPosition = FormStartPosition.CenterScreen;
+    //     }
+    //     private void handleConfirmClick(object sender, EventArgs e)
+    //     {
+    //         try
+    //             {
+    //                 ControllerUsuario.AtualizarUsuario(
+    //                     this.Id,
+    //                     txtNome.Text,
+    //                     txtEmail.Text,
+    //                     txtSenha.Text
+    //                 );
+    //                 MessageBox.Show("Usuário atualizado com sucesso.");
+    //                 this.Close();
+    //             }
+    //             catch (Exception err)
+    //         {
+    //            MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
+    //         }
+    //     }
+
+    //     private void handleCancelClick(object sender, EventArgs e)
+    //     {
+    //         this.Close();
+    //     }
+    // }
 
     public class ExcluirUsuario : Form
     {
@@ -276,103 +496,4 @@ public class OperacoesUsuario : Form
         }
     }
 
-    public class AtualizarUsuario : Form
-    {
-        private System.ComponentModel.IContainer components = null;
-
-        int Id;
-        Label lblNome;
-        Label lblEmail;
-        Label lblSenha;
-
-        TextBox txtNome;
-        TextBox txtEmail;
-        TextBox txtSenha;
-
-        Button btnConfirm;
-        Button btnCancel;
-
-        public AtualizarUsuario(int Id)
-        {
-            this.Id = Id;
-
-            this.lblNome = new Label();
-            this.lblNome.Text = "Nome";
-            this.lblNome.Location = new Point(130, 20);
-
-            this.lblEmail = new Label();
-            this.lblEmail.Text = "Email";
-            this.lblEmail.Location = new Point(130, 80);
-            this.lblEmail.Size = new Size(300, 30);
-            
-            this.lblSenha = new Label();
-            this.lblSenha.Text = "Senha";
-            this.lblSenha.Location = new Point(130, 140);
-            this.lblSenha.Size = new Size(300, 30);
-
-            this.txtNome = new TextBox();
-            this.txtNome.Location = new Point(10, 50);
-            this.txtNome.Size = new Size(280, 30);
-
-            this.txtEmail = new TextBox();
-            this.txtEmail.Location = new Point(10, 110);
-            this.txtEmail.Size = new Size(280, 30);
-
-            this.txtSenha = new TextBox();
-            this.txtSenha.Location = new Point(10, 170);
-            this.txtSenha.Size = new Size(280, 30);
-            this.txtSenha.PasswordChar = '*';
-
-            this.btnConfirm = new Button();
-            this.btnConfirm.Text = "Confirmar";
-            this.btnConfirm.Location = new Point(100, 280);
-            this.btnConfirm.Size = new Size(90, 30);
-            this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
-
-            this.btnCancel = new Button();
-            this.btnCancel.Text = "Cancelar";
-            this.btnCancel.Location = new Point(100, 320);
-            this.btnCancel.Size = new Size(90, 30);
-            this.btnCancel.Click += new EventHandler(this.handleCancelClick);
-
-            this.Controls.Add(this.lblNome);
-            this.Controls.Add(this.lblEmail);
-            this.Controls.Add(this.lblSenha);
-
-            this.Controls.Add(this.txtNome);
-            this.Controls.Add(this.txtEmail);
-            this.Controls.Add(this.txtSenha);
-
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnConfirm);
-
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 360);
-            this.Text = "Atualizar Usuário ";
-            this.StartPosition = FormStartPosition.CenterScreen;
-        }
-        private void handleConfirmClick(object sender, EventArgs e)
-        {
-            try
-                {
-                    ControllerUsuario.AtualizarUsuario(
-                        this.Id,
-                        txtNome.Text,
-                        txtEmail.Text,
-                        txtSenha.Text
-                    );
-                    MessageBox.Show("Usuário atualizado com sucesso.");
-                    this.Close();
-                }
-                catch (Exception err)
-            {
-               MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
-            }
-        }
-
-        private void handleCancelClick(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-    }
+    

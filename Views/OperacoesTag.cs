@@ -92,7 +92,7 @@ public class OperacoesTag : Form
             if (listView.SelectedItems.Count > 0)
             {
                 ListViewItem itemSelecionado = listView.SelectedItems[0];
-                new AtualizarTag(Convert.ToInt32(itemSelecionado.Text)).Show();
+                new InserirTag(Convert.ToInt32(itemSelecionado.Text)).Show();
             }
             else
             {
@@ -120,145 +120,94 @@ public class OperacoesTag : Form
         }
     }
 
-    public class InserirTag : Form 
-    {
-        private System.ComponentModel.IContainer components = null;
-
-        Label lblDescricao;
-        TextBox txtDescricao;
-
-        Button btnConfirm;
-        Button btnCancel;
-
-        public InserirTag()
+    public class InserirTag : Form //Inserir e Atualizar Tag
         {
-            this.lblDescricao = new Label();
-            this.lblDescricao.Text = "Descrição";
-            this.lblDescricao.Location = new Point(120, 20);
+            private System.ComponentModel.IContainer components = null;
 
-            this.txtDescricao = new TextBox();
-            this.txtDescricao.Location = new Point(10, 50);
-            this.txtDescricao.Size = new Size(280, 30);
+            Tag tag;
 
+            Label lblNome;
+            Label lblDescricao;
 
-            this.btnConfirm = new Button();
-            this.btnConfirm.Text = "Confirmar";
-            this.btnConfirm.Location = new Point(105, 120);
-            this.btnConfirm.Size = new Size(90, 30);
-            this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
+            TextBox txtNome;
+            TextBox txtDescricao;
 
-            this.btnCancel = new Button();
-            this.btnCancel.Text = "Cancelar";
-            this.btnCancel.Location = new Point(105, 160);
-            this.btnCancel.Size = new Size(90, 30);
-            this.btnCancel.Click += new EventHandler(this.handleCancelClick);
+            Button btnConfirm;
+            Button btnCancel;
 
-            this.Controls.Add(this.lblDescricao);
-            this.Controls.Add(this.txtDescricao);
-
-            this.Controls.Add(this.btnConfirm);
-            this.Controls.Add(this.btnCancel);
-
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 230);
-            this.Text = "Inserir Tag ";
-            this.StartPosition = FormStartPosition.CenterScreen;
-        }
-        private void handleConfirmClick(object sender, EventArgs e)
-        {
-            try
+            public InserirTag(int id = 0)
             {
-                ControllerTag.InserirTag(
-                    txtDescricao.Text
-                );
-                MessageBox.Show("Tag inserida com sucesso.");
+
+                this.lblDescricao = new Label();
+                this.lblDescricao.Text = "Descrição";
+                this.lblDescricao.Location = new Point(110, 40);
+                this.lblDescricao.Size = new Size(300, 20);
+
+                this.txtDescricao = new TextBox();
+                this.txtDescricao.Location = new Point(10, 70);
+                this.txtDescricao.Size = new Size(270, 20);
+
+                this.btnConfirm = new Button();
+                this.btnConfirm.Text = "Confirmar";
+                this.btnConfirm.Location = new Point(100, 150);
+                this.btnConfirm.Size = new Size(80, 30);
+                this.btnConfirm.Click += new EventHandler(this.btnConfirmClick);
+
+                this.btnCancel = new Button();
+                this.btnCancel.Text = "Cancelar";
+                this.btnCancel.Location = new Point(100, 190);
+                this.btnCancel.Size = new Size(80, 30);
+                this.btnCancel.Click += new EventHandler(this.btnCancelClick);
+
+                if (id > 0) {
+                    this.tag = ControllerTag.GetTag(id);
+                    this.txtDescricao.Text = this.tag.Descricao;
+                }
+
+                this.Controls.Add(this.lblDescricao);
+
+                this.Controls.Add(this.txtDescricao);
+
+                this.Controls.Add(this.btnConfirm);
+                this.Controls.Add(this.btnCancel);
+
+                this.components = new System.ComponentModel.Container();
+                this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+                this.Text = id > 0 ? "Alterar Tag " : "Inserir Tag ";
+                this.StartPosition = FormStartPosition.CenterScreen;
+            }
+            private void btnConfirmClick(object sender, EventArgs e)
+            {
+                bool isUpdate = this.tag != null;
+                try
+                {
+                
+                    if (isUpdate) 
+                    {
+                    ControllerTag.AtualizarTag(
+                        this.tag.Id,
+                        txtDescricao.Text
+                    );
+                    } else {
+                        ControllerTag.InserirTag(
+                            txtDescricao.Text
+                        );
+                    }
+
+                    MessageBox.Show($"Dados {(isUpdate ? "alterados" : "incluídos")} com sucesso.");
+                    this.Close();
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show($"Não foi possível {(isUpdate ? "alterar" : "incluir")} os dados. {err.Message}");
+                }
+            }
+
+            private void btnCancelClick(object sender, EventArgs e)
+            {
                 this.Close();
             }
-            catch (System.Exception)
-            {
-                MessageBox.Show("Não foi possível inserir os dados.");
-            }
         }
-
-        private void handleCancelClick(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-    }  
-
-    public class AtualizarTag : Form 
-    {
-        private System.ComponentModel.IContainer components = null;
-
-        int Id;
-        Label lblDescricao;
-        TextBox txtDescricao;
-
-        Button btnConfirm;
-        Button btnCancel;
-
-        public AtualizarTag(int Id)
-        {
-            this.Id = Id;
-
-            this.lblDescricao = new Label();
-            this.lblDescricao.Text = "Descrição";
-            this.lblDescricao.Location = new Point(120, 20);
-
-            this.txtDescricao = new TextBox();
-            this.txtDescricao.Location = new Point(10, 50);
-            this.txtDescricao.Size = new Size(280, 30);
-
-
-            this.btnConfirm = new Button();
-            this.btnConfirm.Text = "Confirmar";
-            this.btnConfirm.Location = new Point(105, 120);
-            this.btnConfirm.Size = new Size(90, 30);
-            this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
-
-            this.btnCancel = new Button();
-            this.btnCancel.Text = "Cancelar";
-            this.btnCancel.Location = new Point(105, 160);
-            this.btnCancel.Size = new Size(90, 30);
-            this.btnCancel.Click += new EventHandler(this.handleCancelClick);
-
-            this.Controls.Add(this.lblDescricao);
-
-            this.Controls.Add(this.txtDescricao);
-
-            this.Controls.Add(this.btnConfirm);
-            this.Controls.Add(this.btnCancel);
-            
-
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 230);
-            this.Text = "Atualizar Tag ";
-            this.StartPosition = FormStartPosition.CenterScreen;
-        }
-        private void handleConfirmClick(object sender, EventArgs e)
-        {
-            try
-            {
-                ControllerTag.AtualizarTag(
-                    this.Id,
-                    txtDescricao.Text
-                );
-                MessageBox.Show("Tag atualizada com sucesso.");
-                this.Close();
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
-            }
-        }
-
-        private void handleCancelClick(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-    }
 
     public class ExcluirTag : Form 
     {
