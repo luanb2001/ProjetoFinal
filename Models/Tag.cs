@@ -50,7 +50,7 @@ namespace Models
             return base.GetHashCode();
         }
 
-        public static void AlterarTag(
+        public static void AtualizarTag(
             int Id,
             string Descricao
         )

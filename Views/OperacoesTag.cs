@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using Models;
+using Controllers;
 
 public class OperacoesTag : Form 
     {
@@ -21,6 +22,7 @@ public class OperacoesTag : Form
         Button btnUpdate;
 
         ListView listView;
+        ListViewItem newLine;   
         public OperacoesTag()
         {
             this.Controls.Add(this.lblTags);
@@ -30,15 +32,20 @@ public class OperacoesTag : Form
             listView.Size = new Size(410, 500);
             listView.View = View.Details;
 
-            listView.Items.AddRange(new ListViewItem[] { /*lista1*/ });
             listView.Columns.Add("ID", -2, HorizontalAlignment.Left);
             listView.Columns.Add("Descrição", -2, HorizontalAlignment.Left);
-
             listView.FullRowSelect = true;
             listView.GridLines = true;
             listView.AllowColumnReorder = true;
             listView.Sorting = SortOrder.Ascending;
 
+            foreach (Tag item in ControllerTag.VisualizarTag())
+            {
+                newLine = new ListViewItem(item.Id.ToString());
+                newLine.SubItems.Add(item.Descricao);
+
+                listView.Items.Add(newLine);
+            }
 
             this.btnInsert = new Button();
             this.btnInsert.Text = "Inserir";
@@ -74,6 +81,12 @@ public class OperacoesTag : Form
             this.ClientSize = new System.Drawing.Size(500, 600);
         }
 
+        private void handleConfirmClickTagInserir(object sender, EventArgs e)
+        {
+            InserirTag menu = new InserirTag();
+            menu.ShowDialog();
+        }
+
         private void handleConfirmClickTagAtualizar(object sender, EventArgs e)
         {
             if (listView.SelectedItems.Count > 0)
@@ -99,13 +112,7 @@ public class OperacoesTag : Form
                 MessageBox.Show("Não há itens selecionados");
             }
         }
-
-
-        private void handleConfirmClickTagInserir(object sender, EventArgs e)
-        {
-            InserirTag menu = new InserirTag();
-            menu.ShowDialog();
-        }
+        
         private void handleCancelClick(object sender, EventArgs e)
         {
 
@@ -118,7 +125,6 @@ public class OperacoesTag : Form
         private System.ComponentModel.IContainer components = null;
 
         Label lblDescricao;
-
         TextBox txtDescricao;
 
         Button btnConfirm;
@@ -161,25 +167,17 @@ public class OperacoesTag : Form
         }
         private void handleConfirmClick(object sender, EventArgs e)
         {
-            DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja inserir uma nova Tag?" +
-                $"",
-                "Inserir Tag",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
+            try
             {
-                MessageBox.Show(
-                    $"Tag inserida com sucesso! " +
-                    $"",
-                    "",
-                    MessageBoxButtons.OK
+                ControllerTag.InserirTag(
+                    txtDescricao.Text
                 );
+                MessageBox.Show("Tag inserida com sucesso.");
+                this.Close();
             }
-            else
+            catch (System.Exception)
             {
-                Console.WriteLine("Clicou não");
+                MessageBox.Show("Não foi possível inserir os dados.");
             }
         }
 
@@ -193,16 +191,17 @@ public class OperacoesTag : Form
     {
         private System.ComponentModel.IContainer components = null;
 
-        int id;
+        int Id;
         Label lblDescricao;
-
         TextBox txtDescricao;
 
         Button btnConfirm;
         Button btnCancel;
 
-        public AtualizarTag(int id)
+        public AtualizarTag(int Id)
         {
+            this.Id = Id;
+
             this.lblDescricao = new Label();
             this.lblDescricao.Text = "Descrição";
             this.lblDescricao.Location = new Point(120, 20);
@@ -240,25 +239,18 @@ public class OperacoesTag : Form
         }
         private void handleConfirmClick(object sender, EventArgs e)
         {
-            DialogResult result;
-            result = MessageBox.Show(
-                $"Deseja atualizar uma Tag?" +
-                $"",
-                "Atualizar Tag",
-                MessageBoxButtons.YesNo
-            );
-            if (result == DialogResult.Yes)
+            try
             {
-                MessageBox.Show(
-                    $"Tag atualizada com sucesso! " +
-                    $"",
-                    "",
-                    MessageBoxButtons.OK
+                ControllerTag.AtualizarTag(
+                    this.Id,
+                    txtDescricao.Text
                 );
+                MessageBox.Show("Tag atualizada com sucesso.");
+                this.Close();
             }
-            else
+            catch (Exception err)
             {
-                Console.WriteLine("Clicou não");
+                MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
             }
         }
 
@@ -271,17 +263,20 @@ public class OperacoesTag : Form
     public class ExcluirTag : Form 
     {
         private System.ComponentModel.IContainer components = null;
-        int id;
+        int Id;
         Label lblDeletar;
         Button btnConfirm;
         Button btnCancel;
-        public ExcluirTag(int id)
+        public ExcluirTag(int Id)
         {
+            this.Id = Id;
+
             this.lblDeletar = new Label();
-            this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {id})";
+            this.lblDeletar.Text = $"Deseja realmente excluir esse item? (ID: {Id})";
             this.lblDeletar.Size = new Size(200, 40);
             this.lblDeletar.TextAlign = ContentAlignment.MiddleCenter;
             this.lblDeletar.Location = new Point(0, 20);
+
             this.btnConfirm = new Button();
             this.btnConfirm.Text = "Sim";
             this.btnConfirm.Size = new Size(80, 30);
@@ -303,18 +298,18 @@ public class OperacoesTag : Form
         }
         private void handleConfirmClick(object sender, EventArgs e)
         {
-            /*try
+            try
             {
-                TagController.ExcluirTag(
-                    this.id
+                ControllerTag.RemoverItem(
+                    this.Id
                 );
                 MessageBox.Show("Tag deletada com sucesso!");
                 this.Close();
             }
-            catch
+            catch (Exception err)
             {
-                MessageBox.Show("Erro ao deletar tag.");
-            }*/ 
+                MessageBox.Show($"Erro ao deletar tag. {err.Message}");
+            } 
         }
         private void handleCancelClick(object sender, EventArgs e)
         {

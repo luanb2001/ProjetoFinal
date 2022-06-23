@@ -52,7 +52,7 @@ namespace Models
             return base.GetHashCode();
         }
 
-        public static void AlterarCategoria(
+        public static void AtualizarCategoria(
             int Id,
             string Nome,
             string Descricao
