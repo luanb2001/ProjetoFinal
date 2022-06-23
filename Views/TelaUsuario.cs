@@ -45,12 +45,6 @@ public class TelaUsuario : Form
             this.btnSenhas.Size = new Size(100, 30);
             this.btnSenhas.Click += new EventHandler(this.handleSenhasClick);
 
-            /*this.btnEspecialidade = new Button();
-            this.btnEspecialidade.Text = "Especialidade";
-            this.btnEspecialidade.Location = new Point(160, 150);
-            this.btnEspecialidade.Size = new Size(100, 30);
-            this.btnEspecialidade.Click += new EventHandler(this.handleEspecialidadeClick);*/
-
             this.btnUsuario = new Button();
             this.btnUsuario.Text = "Usuario";
             this.btnUsuario.Location = new Point(100, 230);
@@ -68,8 +62,6 @@ public class TelaUsuario : Form
             this.Controls.Add(this.btnTags);
             this.Controls.Add(this.btnSenhas);
             this.Controls.Add(this.btnUsuario);
-            /*this.Controls.Add(this.btnEspecialidade);
-            this.Controls.Add(this.btnAgendamento);*/
             this.Controls.Add(this.btnCancel);
 
             this.components = new System.ComponentModel.Container();
@@ -81,26 +73,26 @@ public class TelaUsuario : Form
 
         private void handleCategoriasClick(object sender, EventArgs e)
         {
-            // OpCategorias menu = new OpCategorias();
-            // menu.ShowDialog();
+            OperacoesCategoria menu = new OperacoesCategoria();
+            menu.ShowDialog();
         }
 
         private void handleTagsClick(object sender, EventArgs e)
         {
-            // OpTags menu = new OpTags();
-            // menu.ShowDialog();
+            OperacoesTag menu = new OperacoesTag();
+            menu.ShowDialog();
         }
 
         private void handleSenhasClick(object sender, EventArgs e)
         {
-            // OpSenhas menu = new OpSenhas();
-            // menu.ShowDialog();
+            OperacoesSenha menu = new OperacoesSenha();
+            menu.ShowDialog();
         }
 
         private void handleUsuarioClick(object sender, EventArgs e)
         {
-            // OpUsuarios menu = new OpUsuarios();
-            // menu.ShowDialog();
+            OperacoesUsuario menu = new OperacoesUsuario();
+            menu.ShowDialog();
         }
 
         private void handleCancelClick(object sender, EventArgs e)
