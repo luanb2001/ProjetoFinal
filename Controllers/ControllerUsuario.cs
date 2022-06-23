@@ -50,11 +50,7 @@ namespace Controllers
             {
                 Email = Email;
             }
-            if(!String.IsNullOrEmpty(Senha))
-            {
-                Senha = Senha;
-            }
-            else
+             if(!String.IsNullOrEmpty(Senha) && !BCrypt.Net.BCrypt.Equals(Senha, usuario.Senha))
             {
                 Senha = BCrypt.Net.BCrypt.HashPassword(Senha);
             }
