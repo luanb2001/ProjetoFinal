@@ -58,7 +58,7 @@ namespace Models
             return base.GetHashCode();
         }
 
-        public static void AlterarUsuario(
+        public static void AtualizarUsuario(
             int Id,
             string Nome,
             string Email,
