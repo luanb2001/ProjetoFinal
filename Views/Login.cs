@@ -71,7 +71,7 @@ public class Login : Form
         pbImagem.Size = new Size(150, 150);
         pbImagem.Location = new Point(130, 20);
         pbImagem.ClientSize = new Size(150, 150);
-        pbImagem.Load("Views/logo.png");
+        pbImagem.Load("./logo.png");
         pbImagem.SizeMode = PictureBoxSizeMode.Zoom;
 
         this.Controls.Add(this.lblUser);
