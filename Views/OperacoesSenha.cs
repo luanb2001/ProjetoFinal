@@ -25,6 +25,7 @@ public class OperacoesSenha : Form
         ListViewItem newLine;
         public OperacoesSenha()
         {
+            this.MaximizeBox = false;
 
             this.Controls.Add(this.lblSenhas);
 
@@ -153,6 +154,7 @@ public class OperacoesSenha : Form
     
         public InserirSenha(int id = 0)
         {
+            this.MaximizeBox = false;
             this.ClientSize = new System.Drawing.Size(300, 680);
     
             this.lblNome = new Label();
@@ -334,6 +336,7 @@ public class OperacoesSenha : Form
         Button btnCancel;
         public ExcluirSenha(int id)
         {
+            this.MaximizeBox = false;
             this.id = id;
 
             this.lblDeletar = new Label();

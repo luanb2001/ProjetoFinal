@@ -25,6 +25,7 @@ public class OperacoesTag : Form
     ListViewItem newLine;
     public OperacoesTag()
     {
+        this.MaximizeBox = false;
         this.Controls.Add(this.lblTags);
 
         listView = new ListView();
@@ -137,6 +138,7 @@ public class InserirTag : Form //Inserir e Atualizar Tag
 
     public InserirTag(int id = 0)
     {
+        this.MaximizeBox = false;
 
         this.lblDescricao = new Label();
         this.lblDescricao.Text = "Descrição";
@@ -221,6 +223,7 @@ public class ExcluirTag : Form
     Button btnCancel;
     public ExcluirTag(int Id)
     {
+        this.MaximizeBox = false;
         this.Id = Id;
 
         this.lblDeletar = new Label();

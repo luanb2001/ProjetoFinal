@@ -142,6 +142,7 @@ public class OperacoesUsuario : Form
 
             public InserirUsuario(int id = 0)
             {
+                this.MaximizeBox = false;
                 this.ClientSize = new System.Drawing.Size(300, 320);
 
                 this.lblNome = new Label();
@@ -241,205 +242,6 @@ public class OperacoesUsuario : Form
             }
         }
 
-    // public class InserirUsuario : Form 
-    // {
-    //     private System.ComponentModel.IContainer components = null;
-
-    //     Label lblNome;
-    //     Label lblEmail;
-    //     Label lblSenha;
-
-    //     TextBox txtNome;
-    //     TextBox txtEmail;
-    //     TextBox txtSenha;
-
-    //     Button btnConfirm;
-    //     Button btnCancel;
-
-    //     public InserirUsuario()
-    //     {
-    //         this.lblNome = new Label();
-    //         this.lblNome.Text = "Nome";
-    //         this.lblNome.Location = new Point(130, 20);
-
-    //         this.lblEmail = new Label();
-    //         this.lblEmail.Text = "Email";
-    //         this.lblEmail.Location = new Point(130, 80);
-    //         this.lblEmail.Size = new Size(300, 30);
-            
-    //         this.lblSenha = new Label();
-    //         this.lblSenha.Text = "Senha";
-    //         this.lblSenha.Location = new Point(130, 140);
-    //         this.lblSenha.Size = new Size(300, 30);
-
-    //         this.txtNome = new TextBox();
-    //         this.txtNome.Location = new Point(10, 50);
-    //         this.txtNome.Size = new Size(280, 30);
-
-    //         this.txtEmail = new TextBox();
-    //         this.txtEmail.Location = new Point(10, 110);
-    //         this.txtEmail.Size = new Size(280, 30);
-
-    //         this.txtSenha = new TextBox();
-    //         this.txtSenha.Location = new Point(10, 170);
-    //         this.txtSenha.Size = new Size(280, 30);
-    //         this.txtSenha.PasswordChar = '*';
-
-    //         this.btnConfirm = new Button();
-    //         this.btnConfirm.Text = "Confirmar";
-    //         this.btnConfirm.Location = new Point(100, 280);
-    //         this.btnConfirm.Size = new Size(90, 30);
-    //         this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
-
-    //         this.btnCancel = new Button();
-    //         this.btnCancel.Text = "Cancelar";
-    //         this.btnCancel.Location = new Point(100, 320);
-    //         this.btnCancel.Size = new Size(90, 30);
-    //         this.btnCancel.Click += new EventHandler(this.handleCancelClick);
-
-    //         this.Controls.Add(this.lblNome);
-    //         this.Controls.Add(this.lblEmail);
-    //         this.Controls.Add(this.lblSenha);
-
-    //         this.Controls.Add(this.txtNome);
-    //         this.Controls.Add(this.txtEmail);
-    //         this.Controls.Add(this.txtSenha);
-
-    //         this.Controls.Add(this.btnCancel);
-    //         this.Controls.Add(this.btnConfirm);
-
-    //         this.components = new System.ComponentModel.Container();
-    //         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-    //         this.ClientSize = new System.Drawing.Size(300, 360);
-    //         this.Text = "Inserir Usuário ";
-    //         this.StartPosition = FormStartPosition.CenterScreen;
-    //     }
-    //     private void handleConfirmClick(object sender, EventArgs e)
-    //     {
-    //         try
-    //             {
-    //                 ControllerUsuario.InserirUsuario(
-    //                     txtNome.Text,
-    //                     txtEmail.Text,
-    //                     txtSenha.Text
-    //                 );
-    //                 MessageBox.Show("Usuário inserida com sucesso.");
-    //                 this.Close();
-    //             }
-    //             catch (System.Exception)
-
-    //         {
-    //             MessageBox.Show("Não foi possível inserir os dados.");
-    //         }
-    //     }
-
-    //     private void handleCancelClick(object sender, EventArgs e)
-    //     {
-    //         this.Close();
-    //     }
-    // }
-
-    // public class AtualizarUsuario : Form
-    // {
-    //     private System.ComponentModel.IContainer components = null;
-
-    //     int Id;
-    //     Label lblNome;
-    //     Label lblEmail;
-    //     Label lblSenha;
-
-    //     TextBox txtNome;
-    //     TextBox txtEmail;
-    //     TextBox txtSenha;
-
-    //     Button btnConfirm;
-    //     Button btnCancel;
-
-    //     public AtualizarUsuario(int Id)
-    //     {
-    //         this.Id = Id;
-
-    //         this.lblNome = new Label();
-    //         this.lblNome.Text = "Nome";
-    //         this.lblNome.Location = new Point(130, 20);
-
-    //         this.lblEmail = new Label();
-    //         this.lblEmail.Text = "Email";
-    //         this.lblEmail.Location = new Point(130, 80);
-    //         this.lblEmail.Size = new Size(300, 30);
-            
-    //         this.lblSenha = new Label();
-    //         this.lblSenha.Text = "Senha";
-    //         this.lblSenha.Location = new Point(130, 140);
-    //         this.lblSenha.Size = new Size(300, 30);
-
-    //         this.txtNome = new TextBox();
-    //         this.txtNome.Location = new Point(10, 50);
-    //         this.txtNome.Size = new Size(280, 30);
-
-    //         this.txtEmail = new TextBox();
-    //         this.txtEmail.Location = new Point(10, 110);
-    //         this.txtEmail.Size = new Size(280, 30);
-
-    //         this.txtSenha = new TextBox();
-    //         this.txtSenha.Location = new Point(10, 170);
-    //         this.txtSenha.Size = new Size(280, 30);
-    //         this.txtSenha.PasswordChar = '*';
-
-    //         this.btnConfirm = new Button();
-    //         this.btnConfirm.Text = "Confirmar";
-    //         this.btnConfirm.Location = new Point(100, 280);
-    //         this.btnConfirm.Size = new Size(90, 30);
-    //         this.btnConfirm.Click += new EventHandler(this.handleConfirmClick);
-
-    //         this.btnCancel = new Button();
-    //         this.btnCancel.Text = "Cancelar";
-    //         this.btnCancel.Location = new Point(100, 320);
-    //         this.btnCancel.Size = new Size(90, 30);
-    //         this.btnCancel.Click += new EventHandler(this.handleCancelClick);
-
-    //         this.Controls.Add(this.lblNome);
-    //         this.Controls.Add(this.lblEmail);
-    //         this.Controls.Add(this.lblSenha);
-
-    //         this.Controls.Add(this.txtNome);
-    //         this.Controls.Add(this.txtEmail);
-    //         this.Controls.Add(this.txtSenha);
-
-    //         this.Controls.Add(this.btnCancel);
-    //         this.Controls.Add(this.btnConfirm);
-
-    //         this.components = new System.ComponentModel.Container();
-    //         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-    //         this.ClientSize = new System.Drawing.Size(300, 360);
-    //         this.Text = "Atualizar Usuário ";
-    //         this.StartPosition = FormStartPosition.CenterScreen;
-    //     }
-    //     private void handleConfirmClick(object sender, EventArgs e)
-    //     {
-    //         try
-    //             {
-    //                 ControllerUsuario.AtualizarUsuario(
-    //                     this.Id,
-    //                     txtNome.Text,
-    //                     txtEmail.Text,
-    //                     txtSenha.Text
-    //                 );
-    //                 MessageBox.Show("Usuário atualizado com sucesso.");
-    //                 this.Close();
-    //             }
-    //             catch (Exception err)
-    //         {
-    //            MessageBox.Show($"Não foi possível inserir os dados. {err.Message}");
-    //         }
-    //     }
-
-    //     private void handleCancelClick(object sender, EventArgs e)
-    //     {
-    //         this.Close();
-    //     }
-    // }
-
     public class ExcluirUsuario : Form
     {
         private System.ComponentModel.IContainer components = null;
@@ -449,6 +251,7 @@ public class OperacoesUsuario : Form
         Button btnCancel;
         public ExcluirUsuario(int Id)
         {
+            this.MaximizeBox = false;
             this.Id = Id;
 
             this.lblDeletar = new Label();
