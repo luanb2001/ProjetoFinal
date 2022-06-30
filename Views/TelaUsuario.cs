@@ -23,6 +23,7 @@ public class TelaUsuario : Form
 
         public TelaUsuario()
         {
+            this.MaximizeBox = false;
 
             this.btnCategorias = new Button();
             this.btnCategorias.Text = "Categorias";

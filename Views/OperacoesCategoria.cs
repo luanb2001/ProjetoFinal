@@ -25,6 +25,7 @@ public class OperacoesCategoria : Form
         ListViewItem newLine;
         public OperacoesCategoria()
         {
+            this.MaximizeBox = false;
             this.Controls.Add(this.lblCategorias);
 
             listView = new ListView();
@@ -138,6 +139,7 @@ public class OperacoesCategoria : Form
 
             public InserirCategoria(int id = 0)
             {
+                this.MaximizeBox = false;
                 this.lblNome = new Label();
                 this.lblNome.Text = "Nome";
                 this.lblNome.Location = new Point(132, 20);
@@ -234,6 +236,7 @@ public class OperacoesCategoria : Form
 
             public ExcluirCategoria(int Id)
             {
+                this.MaximizeBox = false;
                 this.Id = Id;
 
                 this.lblDeletar = new Label();
